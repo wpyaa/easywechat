@@ -13,10 +13,11 @@ namespace EasyWeChat\Kernel;
 
 use EasyWeChat\Kernel\Providers\ConfigServiceProvider;
 use EasyWeChat\Kernel\Providers\EventDispatcherServiceProvider;
-//use EasyWeChat\Kernel\Providers\ExtensionServiceProvider;
+use EasyWeChat\Kernel\Providers\ExtensionServiceProvider;
 use EasyWeChat\Kernel\Providers\HttpClientServiceProvider;
 use EasyWeChat\Kernel\Providers\LogServiceProvider;
 use EasyWeChat\Kernel\Providers\RequestServiceProvider;
+use EasyWeChatComposer\Traits\WithAggregator;
 use Pimple\Container;
 
 /**
@@ -32,6 +33,7 @@ use Pimple\Container;
  */
 class ServiceContainer extends Container
 {
+    use WithAggregator;
     /**
      * @var string
      */
@@ -110,7 +112,7 @@ class ServiceContainer extends Container
             LogServiceProvider::class,
             RequestServiceProvider::class,
             HttpClientServiceProvider::class,
-           // ExtensionServiceProvider::class,
+            ExtensionServiceProvider::class,
             EventDispatcherServiceProvider::class,
         ], $this->providers);
     }
@@ -134,9 +136,9 @@ class ServiceContainer extends Container
      */
     public function __get($id)
     {
-//        if ($this->shouldDelegate($id)) {
-//            return $this->delegateTo($id);
-//        }
+        if ($this->shouldDelegate($id)) {
+            return $this->delegateTo($id);
+        }
 
         return $this->offsetGet($id);
     }
